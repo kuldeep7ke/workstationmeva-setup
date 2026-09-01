@@ -1,0 +1,19 @@
+[Unit]
+Description=Workstation Meva Online server
+After=network.target caddy.service
+Wants=caddy.service
+
+[Service]
+Type=simple
+User=meva
+WorkingDirectory=/opt/workstation-online/backend
+# dotenv loads .env from process.cwd(); without this the backend/.env written
+# by install.sh (and by Backups -> Database) is never read and DATABASE_URL/PORT are ignored.
+EnvironmentFile=/opt/workstation-online/backend/.env
+ExecStart=/usr/bin/node /opt/workstation-online/backend/dist/index.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

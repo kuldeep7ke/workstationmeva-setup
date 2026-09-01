@@ -1,0 +1,12 @@
+[Unit]
+Description=Workstation Meva Online reverse proxy (Caddy)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/workstation-online/proxy/caddy/caddy run --config /opt/workstation-online/proxy/caddy/Caddyfile --adapter caddyfile
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

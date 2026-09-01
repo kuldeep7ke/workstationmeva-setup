@@ -1,0 +1,17 @@
+[Unit]
+Description=Workstation Meva Online server
+After=network.target workstation-meva-caddy.service
+Wants=workstation-meva-caddy.service
+
+[Service]
+Type=simple
+User=meva
+WorkingDirectory=/opt/workstation-online/backend
+EnvironmentFile=/opt/workstation-online/backend/.env
+ExecStart=/opt/workstation-node/bin/node /opt/workstation-online/backend/dist/index.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

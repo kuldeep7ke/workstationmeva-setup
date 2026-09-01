@@ -1,0 +1,58 @@
+node_modules/
+dist/
+.env
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+workstation.db*
+backups/
+*.pem
+.jwt-secret
+.dev-credentials
+tsconfig.tsbuildinfo
+
+# Windows installer binary (rebuilt on demand — keep the NSIS script in git)
+installer/*.exe
+
+# Debian/Ubuntu installer binary (rebuilt on demand — keep the build script in git)
+installer/*.deb
+
+# Bundled Node.js runtime for the installer (zip + extracted = regenerable download)
+tools/node/*.zip
+tools/node/node-v24.19.0-win-x64/
+
+# Bundled Caddy for the .deb installer (downloads at build time)
+tools/caddy/
+
+# Android build artifacts
+android/app/build/
+android/.gradle/
+android/local.properties
+*.tar.xz
+*.tar.gz
+# Node runtimes for Android APK (gradle downloads at build time if absent;
+# keep local copies in app/src/main/assets/node/bin to build offline)
+android/app/src/main/assets/node/
+
+# Runtime & local-only files
+saved-connections.json
+monitor.log
+.monitor-state.json
+telemetry/
+server.log
+server-err.log
+server-restart.log
+server-restart-err.log
+smoke2*.log
+proxy/caddy-err.log
+proxy/caddy/caddy-err.log
+proxy/caddy-out.log
+login.txt
+
+# Local-only data snapshots (DB mirrors + full dumps contain real user data;
+# the same dumps live git-ignored under backend/backups/)
+data-snapshots/
+
+# Obsidian vault local config
+.obsidian/

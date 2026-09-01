@@ -1,0 +1,118 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        accent: {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
+        },
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#16a34a',
+          600: '#15803d',
+          700: '#166534',
+          800: '#14532d',
+          900: '#052e16',
+        },
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#d97706',
+          600: '#b45309',
+          700: '#92400e',
+          800: '#78350f',
+          900: '#451a03',
+        },
+        danger: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#dc2626',
+          600: '#b91c1c',
+          700: '#991b1b',
+          800: '#7f1d1d',
+          900: '#450a0a',
+        },
+         surface: {
+           50: '#f7f3ee',
+           100: '#fff8ef',
+           200: '#efe7dc',
+           300: '#e6d9ca',
+           400: '#c8bfb5',
+           500: '#a89f93',
+           600: '#8a8073',
+           700: '#6b5f52',
+           800: '#3d352c',
+           900: '#251f18',
+           950: '#1e1a14',
+           975: '#16130e',
+           990: '#0d0b07',
+         }, // Deepened 400-900 for stronger light-mode text contrast
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      borderRadius: {
+        '2xl': '22px',
+        'xl': '18px',
+        'lg': '14px',
+        'pill': '999px',
+      },
+      keyframes: {
+        'pulse-soft': {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.7', transform: 'scale(1.05)' },
+        },
+        'bounce-subtle': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' },
+        },
+        'ping-small': {
+          '0%': { transform: 'scale(1)', opacity: '1' },
+          '75%, 100%': { transform: 'scale(1.3)', opacity: '0' },
+        },
+        'spin-slow': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'live-pulse': {
+          '0%': { boxShadow: '0 0 0 0 rgba(249,115,22,0.7)' },
+          '70%': { boxShadow: '0 0 0 8px rgba(249,115,22,0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(249,115,22,0)' },
+        },
+      },
+      animation: {
+        'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
+        'bounce-subtle': 'bounce-subtle 1.5s ease-in-out infinite',
+        'ping-small': 'ping-small 1.5s ease-in-out infinite',
+        'spin-slow': 'spin-slow 3s linear infinite',
+        'slide-up': 'slide-up 0.3s ease-out',
+        'live-pulse': 'live-pulse 2s ease-in-out infinite',
+      },
+    },
+  },
+  plugins: [],
+};

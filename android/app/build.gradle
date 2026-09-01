@@ -1,0 +1,129 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.workstation.meva'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.workstation.meva"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets']
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Bundle the Workstation Meva server + frontend + Node runtime into the APK.
+// Layout expected by NodeService (mirrored into filesDir on first start):
+//   assets/server/dist/...        backend build output (backend/dist)
+//   assets/server/node_modules/   backend dependencies
+//   assets/frontend/dist/...      frontend build output (frontend/dist)
+//   assets/node/bin/node-arm64    Node runtime (linux arm64)
+//   assets/node/bin/node-armv7l   Node runtime (linux armv7l)
+// ---------------------------------------------------------------------------
+
+
+def isWindows = System.getProperty('os.name').toLowerCase().contains('windows')
+def npmCmd = isWindows ? 'npm.cmd' : 'npm'
+
+tasks.register('prepareServerAssets') {
+    doLast {
+        def backendDir = file('../../backend')
+        def frontendDir = file('../../frontend')
+        def assetsServer = file('src/main/assets/server')
+        def assetsFrontend = file('src/main/assets/frontend')
+
+        def backendDist = file('src/main/assets/server/dist')
+        def backendModules = file('src/main/assets/server/node_modules')
+        def frontendDist = file('src/main/assets/frontend/dist')
+
+        println '==> Checking for pre-built backend and frontend'
+        if (!file('../../backend/dist').exists()) {
+            throw new GradleException("backend/dist missing - run 'cd backend && npm install && npm run build' first (or let CI do it)")
+        }
+        if (!file('../../frontend/dist').exists()) {
+            throw new GradleException("frontend/dist missing - run 'cd frontend && npm install && npm run build' first (or let CI do it)")
+        }
+        if (!file('../../backend/node_modules').exists()) {
+            throw new GradleException("backend/node_modules missing - run 'cd backend && npm install' first (or let CI do it)")
+        }
+
+        println '==> Copying server bundle into assets'
+        delete assetsServer
+        copy { from file('../../backend/dist') into backendDist }
+        copy { from file('../../backend/node_modules') into backendModules exclude '**/*.gz' }
+        copy { from file('../../frontend/dist') into frontendDist }
+
+        println '==> Server assets ready'
+    }
+}
+
+tasks.register('downloadNodeBinaries') {
+    doLast {
+        def binDir = file('src/main/assets/node/bin')
+        binDir.mkdirs()
+        downloadNodeRuntime('linux-arm64', file('src/main/assets/node/bin/node-arm64'))
+        downloadNodeRuntime('linux-armv7l', file('src/main/assets/node/bin/node-armv7l'))
+    }
+}
+
+def downloadNodeRuntime(String platform, File dest) {
+    def nodeVersion = 'v20.11.1'
+    if (dest.exists() && dest.length() > 1000000) {
+        println "Node runtime already present: ${dest.name}"
+        return
+    }
+    def url = "https://nodejs.org/dist/${nodeVersion}/node-${nodeVersion}-${platform}.tar.xz"
+    def tarball = file("${buildDir}/node-${nodeVersion}-${platform}.tar.xz")
+    def extractDir = file("${buildDir}/node-${nodeVersion}-${platform}")
+    println "==> Downloading Node ${nodeVersion} (${platform})"
+    try {
+        exec { commandLine 'curl', '-L', '-o', tarball.absolutePath, url }
+        exec { commandLine 'tar', '-xJf', tarball.absolutePath, '-C', buildDir.absolutePath }
+        copy { from "${extractDir}/bin/node" into dest.parentFile }
+        delete tarball
+        delete extractDir
+        println "==> Node ${platform} ready at ${dest}"
+    } catch (Exception e) {
+        println "WARNING: failed to download Node ${platform}: ${e.message}"
+        println "         The app will build but the server cannot run on that ABI."
+        println "         Place the node binary manually at ${dest.absolutePath} to fix."
+    }
+}
+
+preBuild.dependsOn 'downloadNodeBinaries', 'prepareServerAssets'
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.webkit:webkit:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+}

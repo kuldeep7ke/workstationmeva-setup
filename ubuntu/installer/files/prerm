@@ -1,0 +1,11 @@
+#!/bin/sh
+# Workstation Meva Online - Debian/Ubuntu package pre-remove
+set -e
+
+case "$1" in
+  remove|upgrade|deconfigure)
+    systemctl stop workstation-meva.service workstation-meva-caddy.service 2>/dev/null || true
+    systemctl disable workstation-meva.service workstation-meva-caddy.service 2>/dev/null || true
+    ;;
+esac
+exit 0

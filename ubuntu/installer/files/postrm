@@ -1,0 +1,19 @@
+#!/bin/sh
+# Workstation Meva Online - Debian/Ubuntu package post-remove
+set -e
+
+case "$1" in
+  purge)
+    # "apt purge": remove everything including user data.
+    systemctl stop workstation-meva.service workstation-meva-caddy.service 2>/dev/null || true
+    systemctl disable workstation-meva.service workstation-meva-caddy.service 2>/dev/null || true
+    rm -rf /opt/workstation-online
+    rm -rf /opt/workstation-node
+    if id -u meva >/dev/null 2>&1; then userdel meva 2>/dev/null || true; fi
+    systemctl daemon-reload 2>/dev/null || true
+    ;;
+  remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    # "apt remove": keep /opt/workstation-online (data + .env) so reinstall restores it.
+    ;;
+esac
+exit 0

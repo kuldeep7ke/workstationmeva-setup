@@ -1,0 +1,14 @@
+# Workstation Meva — Caddy reverse proxy (LAN)
+# ==================================================
+# The Node backend stays on 127.0.0.1:3002 — Caddy makes it available on
+# port 80 for every address of this machine (http://<LAN-IP> and
+# http://workstation / http://localhost), so LAN users never need :3002.
+#
+# NOTE: binding ":80" (no hostnames) means the same config keeps working
+# even if this PC's LAN IP changes (DHCP). windows/Start Server.bat auto-
+# starts Caddy when proxy\caddy\caddy.exe exists.
+
+:80 {
+    encode gzip zstd
+    reverse_proxy 127.0.0.1:3002
+}

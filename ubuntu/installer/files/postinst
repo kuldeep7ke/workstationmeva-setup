@@ -1,0 +1,57 @@
+#!/bin/sh
+# Workstation Meva Online - Debian/Ubuntu package post-install
+set -e
+
+APP="/opt/workstation-online"
+SERVICE_USER="meva"
+NODE_PREFIX="/opt/workstation-node"
+BUNDLE="$(ls "$APP"/tools/node/node-v*-linux-x64.tar.xz 2>/dev/null | head -1 || true)"
+
+case "$1" in
+  configure)
+    # 1) system service user (created before first service start so the server
+    #    can write its local db, logs, telemetry and .env later).
+    if ! id -u "$SERVICE_USER" >/dev/null 2>&1; then
+      useradd --system --home "$APP" --shell /usr/sbin/nologin "$SERVICE_USER" || true
+    fi
+
+    # 2) bundled Node.js runtime - extract once (no internet needed).
+    if [ -n "$BUNDLE" ] && [ ! -x "$NODE_PREFIX/bin/node" ]; then
+      mkdir -p "$NODE_PREFIX"
+      tar -xJf "$BUNDLE" -C "$NODE_PREFIX" --strip-components=1
+    fi
+
+    # 3) backend/.env - one-time, never overwrites an existing one.
+    if [ ! -f "$APP/backend/.env" ]; then
+      cp "$APP/backend/.env.example" "$APP/backend/.env"
+      SECRET=""
+      if [ -x "$NODE_PREFIX/bin/node" ]; then
+        SECRET="$("$NODE_PREFIX/bin/node" -e "process.stdout.write(require('crypto').randomBytes(48).toString('hex'))" 2>/dev/null || true)"
+      fi
+      if [ -z "$SECRET" ] && command -v openssl >/dev/null 2>&1; then
+        SECRET="$(openssl rand -hex 48)"
+      fi
+      if [ -n "$SECRET" ]; then
+        sed -i "s|^JWT_SECRET=.*$|JWT_SECRET=$SECRET|" "$APP/backend/.env"
+      fi
+    fi
+
+    # 4) ownership + executable bits (tar modes are only a safety net here).
+    chown -R "$SERVICE_USER:$SERVICE_USER" "$APP"
+    chmod +x "$APP/proxy/caddy/caddy" 2>/dev/null || true
+    chmod +x "$APP/ubuntu"/*.sh 2>/dev/null || true
+    chmod +x "$APP"/*.sh 2>/dev/null || true
+
+    # 5) firewall - best effort, only when ufw is active.
+    if command -v ufw >/dev/null 2>&1 && ufw status 2>/dev/null | grep -qi active; then
+      ufw allow 80/tcp   >/dev/null 2>&1 || true
+      ufw allow 3002/tcp >/dev/null 2>&1 || true
+    fi
+
+    # 6) register + start services.
+    systemctl daemon-reload
+    systemctl enable workstation-meva-caddy.service workstation-meva.service >/dev/null 2>&1 || true
+    systemctl restart workstation-meva-caddy.service workstation-meva.service >/dev/null 2>&1 || true
+    ;;
+esac
+exit 0
