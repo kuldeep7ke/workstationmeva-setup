@@ -533,7 +533,7 @@ $btnLog.Add_Click({
   if (Test-Path -LiteralPath $logFile) { Start-Process notepad $logFile } else { Set-Status 'server.log does not exist yet.' }
 })
 $btnFolder.Add_Click({ if (Test-Path -LiteralPath $backend) { Start-Process explorer.exe $backend } else { Set-Status 'backend folder not found.' } })
-$lnkDbGuide.Add_Click({ Open-Url 'https://github.com/abcnew2025/workstation/blob/main/docs/SETUP-SUPABASE.md' })
+$lnkDbGuide.Add_Click({ Open-Url 'https://github.com/kuldeep7ke/workstationmeva-setup/blob/main/docs/SETUP-SUPABASE.md' })
 
 $btnCopyLocal.Add_Click({ Copy-ToClip "http://localhost:$($script:cfg.PORT)" })
 $btnCopyLan.Add_Click({ $ips = Get-LanData; if ($ips.Count -gt 0) { Copy-ToClip "http://$($ips[0]):$($script:cfg.PORT)" } })

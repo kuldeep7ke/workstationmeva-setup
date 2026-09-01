@@ -25,7 +25,7 @@ app served over LAN (or internet), backed by **Supabase PostgreSQL**, with an
 | Frontend | React SPA (Vite), Socket.IO client, utility-class CSS |
 | Database | PostgreSQL via Supabase pooler (`pg`, port 6543) |
 | Offline mirror | SQLite via `sql.js` → `backend/workstation.db` + outbox sync engine |
-| Repo | `https://github.com/abcnew2025/workstation` (private; local branch `master` pushes to `main`) |
+| Repo | `https://github.com/kuldeep7ke/workstationmeva-setup` (public; local branch `main` pushes to `main`) |
 
 ## 2. Project Snapshot (verified 2026-08-15)
 
@@ -655,7 +655,7 @@ v24.19.0 has only arm64, so a bump silently breaks 32-bit devices.
 | 66 | **Prompter feel fixes 2026-08-21**: controls work while paused (auto-resume, no forced fullscreen), eased velocity + wheel accumulation, sub-pixel scroll fix (`posRef`) so speeds ≤ 2.0 move, button blur (focus-stuck bug) | `frontend/src/pages/Teleprompter.tsx` |
 | 67 | **Boundary parking 2026-08-21**: bottom parks at -3.0 ◀ with cancellable end popup; top/R/Restart park at +3.0 ▶; close button always visible when not prompting (ref-gate bug fixed); subtle speed badge | `frontend/src/pages/Teleprompter.tsx` |
 | 68 | **Custom teleprompter scripts 2026-08-21**: New Script form on the list page (paste & prompt instantly), device-local storage (`tp_custom_scripts`), open/delete saved scripts | `frontend/src/utils/tpCustom.ts`, `frontend/src/pages/TeleprompterList.tsx`, `frontend/src/pages/Teleprompter.tsx` |
-| 69 | **Repo migration + infra fixes 2026-08-21**: repo moved to `abcnew2025/workstation`; fresh-clone 503 page when dist missing; dual-stack listen (`::`); LAN docs/scripts sweep (IP + hostname URLs); README/from-scratch/capsule rewritten | `.git/config`, `backend/src/index.ts`, `lan/*`, `docs/*`, `README.md` |
+| 69 | **Repo migration + infra fixes 2026-08-21**: repo moved to `kuldeep7ke/workstationmeva-setup`; fresh-clone 503 page when dist missing; dual-stack listen (`::`); LAN docs/scripts sweep (IP + hostname URLs); README/from-scratch/capsule rewritten | `.git/config`, `backend/src/index.ts`, `lan/*`, `docs/*`, `README.md` |
 | 70 | **Test Script removed 2026-08-21** — the built-in `/teleprompter/demo` sample was dropped; Custom Scripts (New Script paste-and-prompt) fully replace it for trying/using the prompter without a task | `frontend/src/pages/Teleprompter.tsx`, `frontend/src/pages/TeleprompterList.tsx`, docs |
 | 71 | **Windows setup guide 2026-08-21** — comprehensive `docs/SETUP-GUIDE-WINDOWS.md` covering Windows 10/11: one-click launcher, manual setup, Supabase config, LAN/firewall/Caddy, autostart, launcher internals, troubleshooting table | `docs/SETUP-GUIDE-WINDOWS.md`, `README.md` |
 | 72 | **Windows .exe installer 2026-08-21** — NSIS single-file installer (`installer/workstation-meva-setup.nsi`, built via makensis 3.x) bundles pre-built app + portable Node.js + Caddy; installs to `C:\Workstation-Meva`, opens firewall port 3002, creates Start Menu/desktop shortcuts, registers in Add/Remove Programs, full uninstaller. Output `installer\workstation-meva-setup.exe` (~68 MB, git-ignored). `start-server-core.ps1` now auto-uses bundled `$root\node\node.exe` when present | `installer/workstation-meva-setup.nsi`, `windows/start-server-core.ps1`, `.gitignore`, `docs/SETUP-GUIDE-WINDOWS.md` |

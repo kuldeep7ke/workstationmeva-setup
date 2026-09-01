@@ -35,7 +35,7 @@ This version uses **your own Supabase PostgreSQL database** (free tier) instead 
 | Installed at | `/opt/workstation-online` (config in `backend/.env`) |
 | Service | `workstation-meva.service` under systemd |
 
-**Two ways to install:** (a) a one-file `.deb` package that is **fully offline** — it bundles the built app, a Node.js runtime, and Caddy, so the machine needs no Node.js/npm/compiler/internet (see §3a); or (b) the source-based route, where `ubuntu/install.sh` deploys the source to `/opt/workstation-online`, installs dependencies with `npm ci`, builds both packages, creates `backend/.env` from the template, and registers the systemd service. The database is **never** shipped — the first server start creates all tables automatically (empty), and the first signup becomes the admin. **Note:** the repo has moved to `abcnew2025/workstation`.
+**Two ways to install:** (a) a one-file `.deb` package that is **fully offline** — it bundles the built app, a Node.js runtime, and Caddy, so the machine needs no Node.js/npm/compiler/internet (see §3a); or (b) the source-based route, where `ubuntu/install.sh` deploys the source to `/opt/workstation-online`, installs dependencies with `npm ci`, builds both packages, creates `backend/.env` from the template, and registers the systemd service. The database is **never** shipped — the first server start creates all tables automatically (empty), and the first signup becomes the admin.
 
 ---
 
@@ -95,7 +95,7 @@ released (your `.env` and data are preserved). To fully remove: `sudo apt remove
 sudo apt update && sudo apt install -y git curl
 
 # Clone the repository
-git clone https://github.com/abcnew2025/workstation.git
+git clone https://github.com/kuldeep7ke/workstationmeva-setup.git
 cd workstation
 
 # Run the installer (installs Node.js, builds, installs the service)

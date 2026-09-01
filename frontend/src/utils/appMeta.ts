@@ -4,7 +4,7 @@ export const APP_VERSION = '1.0.0-beta.1';
 export const APP_STATUS = 'Beta';
 export const TESTING_MODE = true;
 export const APP_LICENSE = 'Public Domain (Unlicense)';
-export const APP_REPO_URL = 'https://github.com/abcnew2025/workstation';
+export const APP_REPO_URL = 'https://github.com/kuldeep7ke/workstationmeva-setup';
 
 export function getAppVersionLabel(): string {
   return `v${APP_VERSION} ${APP_STATUS}`;

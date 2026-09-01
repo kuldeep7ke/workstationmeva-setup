@@ -289,7 +289,7 @@ The Windows `.exe` installer highlights:
 ### Ubuntu / Debian
 
 ```bash
-git clone https://github.com/abcnew2025/workstation.git
+git clone https://github.com/kuldeep7ke/workstationmeva-setup.git
 cd workstation
 sudo bash ubuntu/install.sh        # installs Node (bundled offline v24.19.0, else NodeSource 20 LTS), builds, installs systemd service, creates .env (auto JWT_SECRET)
 # .env is created automatically (local database). To use Supabase later:
@@ -309,7 +309,7 @@ Full guide: **[docs/SETUP-GUIDE-UBUNTU.md](docs/SETUP-GUIDE-UBUNTU.md)**
 ### RHEL / CentOS / Rocky / AlmaLinux / Fedora
 
 ```bash
-git clone https://github.com/abcnew2025/workstation.git
+git clone https://github.com/kuldeep7ke/workstationmeva-setup.git
 cd workstation
 sudo bash redhat/install.sh        # dnf + firewalld, opens port 3002, installs Node (bundled offline v24.19.0, else NodeSource 20 LTS), creates .env (auto JWT_SECRET)
 # .env is created automatically (local database). To use Supabase later:
@@ -396,5 +396,5 @@ GET  /api/settings/database/state            # live row counts + sync info
 
 ---
 
-**Repo:** `https://github.com/abcnew2025/workstation` (private) ·
+**Repo:** `https://github.com/kuldeep7ke/workstationmeva-setup` ·
 **License:** Public domain (Unlicense) — free to use, modify, and distribute for any purpose.

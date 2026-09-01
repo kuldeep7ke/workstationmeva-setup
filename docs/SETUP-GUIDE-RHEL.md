@@ -61,7 +61,7 @@ Quick version:
 sudo dnf install -y git curl
 
 # Clone the repository
-git clone https://github.com/kuldeep7ke/workstation-online.git
+git clone https://github.com/kuldeep7ke/workstationmeva-setup.git
 cd workstation-online
 
 # Run the installer (installs Node.js, builds, installs the service)

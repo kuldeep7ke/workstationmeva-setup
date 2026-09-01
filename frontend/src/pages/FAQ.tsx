@@ -68,7 +68,7 @@ const faqs = [
   },
   {
     q: 'How do I contact support?',
-    a: 'Email us at info@marathimeva.com or call +91 86006 33899. Visit our Contact page, or open an issue on the project page: https://github.com/abcnew2025/workstation',
+    a: 'Email us at info@marathimeva.com or call +91 86006 33899. Visit our Contact page, or open an issue on the project page: https://github.com/kuldeep7ke/workstationmeva-setup',
   },
 ];
 

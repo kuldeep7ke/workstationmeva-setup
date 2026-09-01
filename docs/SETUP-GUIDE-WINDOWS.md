@@ -161,7 +161,7 @@ You should see `v18.x.x` or later.
 Open **Command Prompt** and run:
 
 ```
-git clone https://github.com/abcnew2025/workstation.git
+git clone https://github.com/kuldeep7ke/workstationmeva-setup.git
 cd workstation
 ```
 
@@ -214,7 +214,7 @@ Same as Section 2 Step 1.
 ### 3.2 — Clone and configure
 
 ```
-git clone https://github.com/abcnew2025/workstation.git
+git clone https://github.com/kuldeep7ke/workstationmeva-setup.git
 cd workstation
 ```
 
@@ -563,4 +563,4 @@ The self-healing launcher (`windows\start-server.ps1`) runs these steps in order
 | **Manual start** | `cd backend && node dist\index.js` |
 | **Rebuild** | `cd backend && npm run build && cd ..\frontend && npm run build` |
 | **Database setup** | Admin → Backups → Database tab (or edit `backend\.env`) |
-| **Help / feedback** | https://github.com/abcnew2025/workstation/issues |
+| **Help / feedback** | https://github.com/kuldeep7ke/workstationmeva-setup/issues |
