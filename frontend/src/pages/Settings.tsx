@@ -550,7 +550,7 @@ export default function Settings() {
               </div>
               <div className="flex items-center gap-2 text-xs text-surface-600">
                 <MapPin className="w-3.5 h-3.5 text-surface-400" />
-                <span>Marathi Meva, Maliwada, Ahilyanagar, Maharashtra, India - 414001</span>
+                <span>kuldeep7ke, Maliwada, Ahilyanagar, Maharashtra, India - 414001</span>
               </div>
             </div>
           </div>

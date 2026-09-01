@@ -28,5 +28,8 @@
     "@types/selfsigned": "^2.0.4",
     "tsx": "^4.7.0",
     "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
   }
 }

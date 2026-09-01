@@ -39,7 +39,7 @@ export default function About() {
             video editing, bulletin scheduling, and teleprompter delivery. The application is
             <strong> free to use and released to the public domain</strong> (Unlicense) &mdash;
             anyone can deploy, modify, and distribute it. It is initiated and maintained by
-            <strong> Marathi Meva</strong>, empowering editors, reporters, anchors, and video editors
+            <strong> kuldeep7ke</strong>, empowering editors, reporters, anchors, and video editors
             to collaborate seamlessly in real time.
           </p>
         </section>
@@ -102,24 +102,26 @@ export default function About() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-surface-800 mb-4">About Marathi Meva</h2>
+          <h2 className="text-lg font-bold text-surface-800 mb-4">About the Author</h2>
           <p className="text-surface-600 leading-relaxed">
-            Marathi Meva is a technology company based in Ahilyanagar, Maharashtra, India.
-            We specialize in building digital tools for the media and news industry, focusing on
-            streamlining production workflows and improving team collaboration.
+            {APP} is authored and maintained by <strong>kuldeep7ke</strong> (Kuldeep Kamble),
+            based in Ahilyanagar, Maharashtra, India. It started as a tool for building digital
+            media and news-production workflow software, focusing on streamlining production
+            workflows and improving team collaboration.
           </p>
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl border border-surface-200 p-4">
-              <h3 className="text-sm font-semibold text-surface-800 mb-2">Contact</h3>
+              <h3 className="text-sm font-semibold text-surface-800 mb-2">Contact / Project</h3>
               <div className="space-y-1 text-xs text-surface-500">
+                <p>Project: <a href="https://github.com/kuldeep7ke/workstationmeva-setup" className="text-accent-500 hover:text-accent-600">github.com/kuldeep7ke/workstationmeva-setup</a></p>
                 <p>Email: <a href="mailto:info@marathimeva.com" className="text-accent-500 hover:text-accent-600">info@marathimeva.com</a></p>
                 <p>Phone: <a href="tel:+918600633899" className="text-accent-500 hover:text-accent-600">+91 86006 33899</a></p>
               </div>
             </div>
             <div className="bg-white rounded-xl border border-surface-200 p-4">
-              <h3 className="text-sm font-semibold text-surface-800 mb-2">Address</h3>
+              <h3 className="text-sm font-semibold text-surface-800 mb-2">Location</h3>
               <p className="text-xs text-surface-500 leading-relaxed">
-                Marathi Meva, Maliwada,<br />
+                Maliwada,<br />
                 Ahilyanagar, Maharashtra,<br />
                 India &mdash; PIN 414001
               </p>

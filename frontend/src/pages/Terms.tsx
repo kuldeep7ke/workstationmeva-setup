@@ -19,7 +19,7 @@ export default function Terms() {
 
           <section>
             <h2 className="text-lg font-bold text-surface-800 mb-3">2. Purpose</h2>
-            <p> The Application is an open-source tool designed to manage daily news production workflows, including task assignments, bulletins, advertisements, special programs, teleprompter scripts, and staff coordination. It is initiated and maintained by Marathi Meva.</p>
+            <p> The Application is an open-source tool designed to manage daily news production workflows, including task assignments, bulletins, advertisements, special programs, teleprompter scripts, and staff coordination. It is initiated and maintained by kuldeep7ke.</p>
           </section>
 
           <section>
@@ -48,7 +48,7 @@ export default function Terms() {
 
           <section>
             <h2 className="text-lg font-bold text-surface-800 mb-3">7. Limitation of Liability</h2>
-            <p>The Application is provided "as is" and "as available" — under the Unlicense the original authors provide <strong>no warranty, express or implied</strong>, including merchantability or fitness for a particular purpose. In no event shall Marathi Meva or the contributors be liable for any damages arising from the use or inability to use the Application, including but not limited to data loss, service interruptions, or unauthorized access. Back up your data regularly.</p>
+            <p>The Application is provided "as is" and "as available" — under the Unlicense the original authors provide <strong>no warranty, express or implied</strong>, including merchantability or fitness for a particular purpose. In no event shall kuldeep7ke or the contributors be liable for any damages arising from the use or inability to use the Application, including but not limited to data loss, service interruptions, or unauthorized access. Back up your data regularly.</p>
           </section>
 
           <section>

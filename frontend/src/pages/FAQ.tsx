@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: 'What is Workstation Meva?',
-    a: `${APP} is an open-source tool for managing the lifecycle of news production — from task assignment and script writing to bulletin scheduling, video editing, and teleprompter delivery. Initiated and maintained by Marathi Meva.`,
+    a: `${APP} is an open-source tool for managing the lifecycle of news production — from task assignment and script writing to bulletin scheduling, video editing, and teleprompter delivery. Initiated and maintained by kuldeep7ke.`,
   },
   {
     q: 'Is there a desktop Control Panel?',

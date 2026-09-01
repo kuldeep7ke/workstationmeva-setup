@@ -26,5 +26,8 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
     "vite": "^5.1.4"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true
   }
 }

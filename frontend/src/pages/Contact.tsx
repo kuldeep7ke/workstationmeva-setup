@@ -8,7 +8,7 @@ const CONTACT_INFO = {
   email: 'info@marathimeva.com',
   phone: '+91 86006 33899',
   phoneRaw: '+918600633899',
-  address: 'Marathi Meva, Maliwada, Ahilyanagar, Maharashtra, India',
+  address: 'kuldeep7ke, Maliwada, Ahilyanagar, Maharashtra, India',
   pin: '414001',
   website: 'marathimeva.com',
 };
@@ -95,7 +95,7 @@ export default function Contact() {
       </div>
 
       <div className="border-t border-surface-200 py-6 text-center text-xs text-surface-400">
-        <p>{APP} &copy; {new Date().getFullYear()} &mdash; Marathi Meva</p>
+        <p>{APP} &copy; {new Date().getFullYear()} &mdash; kuldeep7ke</p>
         <div className="flex items-center justify-center gap-4 mt-2">
           <Link to="/about" className="hover:text-surface-600 transition-colors">About</Link>
           <Link to="/faq" className="hover:text-surface-600 transition-colors">FAQ</Link>

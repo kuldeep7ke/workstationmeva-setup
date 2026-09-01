@@ -280,7 +280,7 @@ Section "Install" SecMain
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "UninstallString" '"$INSTDIR\Uninstall.exe"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "InstallLocation" "$INSTDIR"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "DisplayIcon" "$INSTDIR\Uninstall.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "Publisher" "Workstation Meva"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "Publisher" "kuldeep7ke"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "URLInfoAbout" "https://github.com/kuldeep7ke/workstationmeva-setup"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WorkstationMeva" "NoRepair" 1

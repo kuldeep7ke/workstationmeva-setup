@@ -14,7 +14,7 @@ export default function Privacy() {
         <div className="space-y-8 text-surface-700 leading-relaxed">
           <section>
             <h2 className="text-lg font-bold text-surface-800 mb-3">1. Information We Collect</h2>
-            <p>This Privacy Policy describes how Marathi Meva ("we", "the Organization") collects, uses, and protects information within the {APP} application ("the Application").</p>
+            <p>This Privacy Policy describes how kuldeep7ke ("we", "the Organization") collects, uses, and protects information within the {APP} application ("the Application").</p>
             <p className="mt-2">
               The Application is a <strong>self-hosted, free, public-domain beta</strong>. It is designed to run
               on <strong>your own server</strong> — task data, scripts, bulletins, and analytics live on your
