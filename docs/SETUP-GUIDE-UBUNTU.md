@@ -192,6 +192,15 @@ auto-starts it too, and `stop.sh` stops it.
 3. All further signups are held for admin approval (Dashboard → pending signups)
 4. For the desktop-style quick login experience, add PINs for staff under Users/Profiles
 
+### What's included (key features)
+
+The app ships with the full newsroom module set. Notable recent additions:
+
+- **Ads → Placement** — includes a **Brand** option with a required **Brand Type** sub-menu: **Laptop Branding, Logo Branding, Sponsor, Special Program, Other**. Slots and Duration only apply to non-Brand placements.
+- **Reporters → Locations** — the **Region** selector now includes **Taluka** (alongside Local, State, District). Region shows title-case in the dropdown and lowercase once selected.
+
+Same app features, no matter the OS you install on.
+
 ### Developer login (restricted — NOT admin)
 
 A built-in file-based login exists as a fallback for when the database is

@@ -400,6 +400,13 @@ Caddy is always stopped automatically when `Stop Server.bat` runs.
 3. The admin approves further signups from the Dashboard
 4. Set up a database connection in **Backups → Database** (optional, recommended)
 
+### What's included (key features)
+
+The app ships with the full newsroom module set. Notable recent additions:
+
+- **Ads → Placement** — includes a **Brand** option with a required **Brand Type** sub-menu: **Laptop Branding, Logo Branding, Sponsor, Special Program, Other**. Slots and Duration only apply to non-Brand placements.
+- **Reporters → Locations** — the **Region** selector now includes **Taluka** (alongside Local, State, District). Region shows title-case in the dropdown and lowercase once selected.
+
 ### Developer login (for emergencies only)
 
 If the database is corrupted or missing, you can still log in with the built-in developer account:
