@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { Plus, Search, Loader2, Pencil, Trash2, User, MapPin, Phone, Mail, Globe, Newspaper, BookOpen, Radio, Megaphone, AlertTriangle, X, Eye, Archive, Clock } from 'lucide-react';
 import { formatLabel } from '../utils/roles';
 
-const REGIONS = ['local', 'state', 'district'];
+const REGIONS = ['local', 'taluka', 'state', 'district'];
 const SPECIALIZATIONS = ['General', 'Politics', 'Crime', 'Sports', 'Entertainment', 'Business', 'Technology', 'Health', 'Education', 'Environment'];
 
 const statusConfig: Record<string, { label: string; color: string }> = {

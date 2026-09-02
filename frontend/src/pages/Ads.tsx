@@ -52,6 +52,7 @@ const AD_PLACES = [
   { value: 'before_news', label: 'Before News' },
   { value: 'after_news', label: 'After News' },
   { value: 'between_programs', label: 'Between Programs' },
+  { value: 'brand', label: 'Brand' },
   { value: 'sponsor', label: 'Sponsor' },
   { value: 'l_shape', label: 'L-Shape' },
   { value: 'scroll', label: 'Scroll' },
@@ -65,10 +66,18 @@ const AD_PLACES = [
   { value: 'other', label: 'Other' },
 ];
 
+const BRAND_TYPES = [
+  { value: 'laptop_branding', label: 'Laptop Branding' },
+  { value: 'logo_branding', label: 'Logo Branding' },
+  { value: 'sponsor', label: 'Sponsor' },
+  { value: 'special_program', label: 'Special Program' },
+  { value: 'other', label: 'Other' },
+];
+
 const EMPTY_FORM = {
   title: '', client_name: '', description: '', duration_seconds: 30,
   category: 'general', party_type: '', booked_by: 'client', reporter_id: '', agency_name: '',
-  slots_count: 1, ad_place: '', renewal_type: 'one_time', renewal_period: '',
+  slots_count: 1, ad_place: '', brand_type: '', renewal_type: 'one_time', renewal_period: '',
   start_date: '', end_date: '', status: '',
 };
 
@@ -156,7 +165,7 @@ export default function Ads() {
       duration_seconds: ad.duration_seconds || 30,
       category: ad.ad_type || 'general', party_type: ad.party_type || '',
       booked_by: ad.booked_by || 'client', reporter_id: ad.reporter_id ? String(ad.reporter_id) : '', agency_name: ad.agency_name || '',
-      slots_count: ad.slots_count || 1, ad_place: ad.ad_place || '',
+      slots_count: ad.slots_count || 1, ad_place: ad.ad_place || '', brand_type: ad.brand_type || '',
       renewal_type: ad.renewal_type || 'one_time', renewal_period: ad.renewal_period || '',
       start_date: ad.start_date || '', end_date: ad.end_date || '', status: ad.status || '',
     });
@@ -218,7 +227,7 @@ export default function Ads() {
             duration_seconds: ad.duration_seconds, rate: ad.rate, ad_type: ad.ad_type,
             party_type: ad.party_type, booked_by: ad.booked_by || 'client',
             reporter_id: ad.reporter_id, agency_name: ad.agency_name,
-            slots_count: ad.slots_count, ad_place: ad.ad_place,
+            slots_count: ad.slots_count, ad_place: ad.ad_place, brand_type: ad.brand_type,
             renewal_type: ad.renewal_type, renewal_period: ad.renewal_period,
             start_date: ad.start_date, end_date: ad.end_date,
           });
@@ -237,7 +246,14 @@ export default function Ads() {
   };
 
   const partyLabel = (t: string) => PARTY_TYPES.find(p => p.value === t)?.label || t || '';
-  const placeLabel = (p: string) => AD_PLACES.find(x => x.value === p)?.label || p || '';
+  const placeLabel = (p: string, brandType?: string) => {
+    const place = AD_PLACES.find(x => x.value === p)?.label || p || '';
+    if (p === 'brand' && brandType) {
+      const bt = BRAND_TYPES.find(x => x.value === brandType)?.label || brandType;
+      return `Brand — ${bt}`;
+    }
+    return place;
+  };
   const bookedByLabel = (ad: any) => {
     if (ad.booked_by === 'reporter') return ad.reporter_name ? `Reporter: ${ad.reporter_name}` : 'Reporter';
     if (ad.booked_by === 'agency') return ad.agency_name ? `Agency: ${ad.agency_name}` : 'Agency';
@@ -430,23 +446,39 @@ export default function Ads() {
                 <div>
                   <label className="flat-label">Place (where & how to place)</label>
                   <select className="flat-select" value={form.ad_place}
-                    onChange={(e) => setForm({ ...form, ad_place: e.target.value })}>
+                    onChange={(e) => setForm({ ...form, ad_place: e.target.value, brand_type: e.target.value === 'brand' ? form.brand_type : '' })}>
                     <option value="">Select place...</option>
                     {AD_PLACES.map((p) => (
                       <option key={p.value} value={p.value}>{p.label}</option>
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="flat-label">Slots (how many times)</label>
-                  <input type="number" min={1} className="flat-input" value={form.slots_count}
-                    onChange={(e) => setForm({ ...form, slots_count: Number(e.target.value) })} />
-                </div>
-                <div>
-                  <label className="flat-label">Duration (sec)</label>
-                  <input type="number" className="flat-input" value={form.duration_seconds}
-                    onChange={(e) => setForm({ ...form, duration_seconds: Number(e.target.value) })} />
-                </div>
+                {form.ad_place === 'brand' && (
+                  <div>
+                    <label className="flat-label">Brand Type *</label>
+                    <select className="flat-select" required value={form.brand_type}
+                      onChange={(e) => setForm({ ...form, brand_type: e.target.value })}>
+                      <option value="">Select brand type...</option>
+                      {BRAND_TYPES.map((bt) => (
+                        <option key={bt.value} value={bt.value}>{bt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {form.ad_place !== 'brand' && (
+                  <>
+                    <div>
+                      <label className="flat-label">Slots (how many times)</label>
+                      <input type="number" min={1} className="flat-input" value={form.slots_count}
+                        onChange={(e) => setForm({ ...form, slots_count: Number(e.target.value) })} />
+                    </div>
+                    <div>
+                      <label className="flat-label">Duration (sec)</label>
+                      <input type="number" className="flat-input" value={form.duration_seconds}
+                        onChange={(e) => setForm({ ...form, duration_seconds: Number(e.target.value) })} />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -590,14 +622,14 @@ export default function Ads() {
                 )}
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-surface-600">
-                {(ad.slots_count && ad.slots_count > 0) && (
+                {ad.ad_place !== 'brand' && (ad.slots_count && ad.slots_count > 0) && (
                   <span className="flex items-center gap-1"><Layers className="w-3 h-3" /> {ad.slots_count} slot{ad.slots_count > 1 ? 's' : ''}</span>
                 )}
                 {ad.ad_place && (
-                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {placeLabel(ad.ad_place)}</span>
+                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {placeLabel(ad.ad_place, ad.brand_type)}</span>
                 )}
                 <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {ad.start_date} - {ad.end_date}</span>
-                <span>{ad.duration_seconds}s</span>
+                {ad.ad_place !== 'brand' && <span>{ad.duration_seconds}s</span>}
               </div>
               {ad.rate && ad.rate > 0 && (
                 <div className="flex items-center gap-1 mt-1 text-xs font-medium text-success-700">

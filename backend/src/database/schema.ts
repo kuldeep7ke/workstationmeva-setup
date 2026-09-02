@@ -451,6 +451,7 @@ CREATE TABLE IF NOT EXISTS ads (
   agency_name TEXT,
   slots_count INTEGER DEFAULT 0,
   ad_place TEXT,
+  brand_type TEXT,
   renewal_type TEXT DEFAULT 'one_time',
   renewal_period TEXT,
   start_date TEXT,
@@ -982,6 +983,7 @@ CREATE TABLE IF NOT EXISTS tasks (
       agency_name TEXT,
       slots_count INTEGER DEFAULT 0,
       ad_place TEXT,
+      brand_type TEXT,
       renewal_type TEXT DEFAULT 'one_time',
       renewal_period TEXT,
       start_date TEXT,
@@ -1844,6 +1846,9 @@ action TEXT NOT NULL CHECK(action IN ('success','failed_password','failed_pin','
   }
   if (!columnExists('ads', 'ad_place')) {
     try { db.run("ALTER TABLE ads ADD COLUMN ad_place TEXT"); } catch {}
+  }
+  if (!columnExists('ads', 'brand_type')) {
+    try { db.run("ALTER TABLE ads ADD COLUMN brand_type TEXT"); } catch {}
   }
   if (!columnExists('ads', 'party_type')) {
     try { db.run("ALTER TABLE ads ADD COLUMN party_type TEXT"); } catch {}

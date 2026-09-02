@@ -47,7 +47,7 @@ router.get('/:id', authenticate, authorize(1, 2, 3), async (req: AuthRequest, re
 });
 
 router.post('/', authenticate, authorize(1, 2, 3), async (req: AuthRequest, res: Response) => {
-  const { title, client_name, description, duration_seconds, rate, start_date, end_date, ad_type, party_type, booked_by, reporter_id, agency_name, slots_count, ad_place, renewal_type, renewal_period } = req.body;
+  const { title, client_name, description, duration_seconds, rate, start_date, end_date, ad_type, party_type, booked_by, reporter_id, agency_name, slots_count, ad_place, brand_type, renewal_type, renewal_period } = req.body;
   if (!title || !client_name) return res.status(400).json({ error: 'Title and client name required.' });
   if (booked_by === 'reporter' && !reporter_id) return res.status(400).json({ error: 'Select a reporter for this booking.' });
   if (booked_by === 'agency' && !agency_name) return res.status(400).json({ error: 'Enter the agency name for this booking.' });
@@ -55,9 +55,9 @@ router.post('/', authenticate, authorize(1, 2, 3), async (req: AuthRequest, res:
 
   const adUid = await nextUid('ADS', 'ads');
   const result = await prepare(`
-    INSERT INTO ads (uid, title, client_name, description, duration_seconds, rate, ad_type, party_type, booked_by, reporter_id, agency_name, slots_count, ad_place, renewal_type, renewal_period, start_date, end_date, created_by)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-  `).run(adUid, title, client_name, description || '', duration_seconds || 0, rate ?? 0, ad_type || null, party_type || null, booked_by || 'client', booked_by === 'reporter' ? Number(reporter_id) : null, booked_by === 'agency' ? agency_name : null, slots_count || 0, ad_place || null, renewal_type || 'one_time', (renewal_type === 'auto_renew' || renewal_type === 'loop') ? renewal_period : null, start_date || null, end_date || null, req.user!.profile_id);
+    INSERT INTO ads (uid, title, client_name, description, duration_seconds, rate, ad_type, party_type, booked_by, reporter_id, agency_name, slots_count, ad_place, brand_type, renewal_type, renewal_period, start_date, end_date, created_by)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+  `).run(adUid, title, client_name, description || '', duration_seconds || 0, rate ?? 0, ad_type || null, party_type || null, booked_by || 'client', booked_by === 'reporter' ? Number(reporter_id) : null, booked_by === 'agency' ? agency_name : null, slots_count || 0, ad_place || null, ad_place === 'brand' ? (brand_type || null) : null, renewal_type || 'one_time', (renewal_type === 'auto_renew' || renewal_type === 'loop') ? renewal_period : null, start_date || null, end_date || null, req.user!.profile_id);
 
   await prepare('INSERT INTO activity_logs (user_id, action, entity_type, entity_id, details) VALUES (?,?,?,?,?)')
     .run(req.user!.profile_id, 'create_ad', 'ads', result.lastInsertRowid, `Created ad: ${title} (${adUid})`);
@@ -66,7 +66,7 @@ router.post('/', authenticate, authorize(1, 2, 3), async (req: AuthRequest, res:
 });
 
 router.put('/:id', authenticate, authorize(1, 2), async (req: AuthRequest, res: Response) => {
-  const { title, client_name, status, description, duration_seconds, rate, ad_type, party_type, booked_by, reporter_id, agency_name, slots_count, ad_place, renewal_type, renewal_period, start_date, end_date } = req.body;
+  const { title, client_name, status, description, duration_seconds, rate, ad_type, party_type, booked_by, reporter_id, agency_name, slots_count, ad_place, brand_type, renewal_type, renewal_period, start_date, end_date } = req.body;
   const updates: string[] = [];
   const params: any[] = [];
   if (title !== undefined) { updates.push('title = ?'); params.push(title); }
@@ -82,6 +82,7 @@ router.put('/:id', authenticate, authorize(1, 2), async (req: AuthRequest, res: 
   if (agency_name !== undefined) { updates.push('agency_name = ?'); params.push(agency_name || null); }
   if (slots_count !== undefined) { updates.push('slots_count = ?'); params.push(slots_count); }
   if (ad_place !== undefined) { updates.push('ad_place = ?'); params.push(ad_place || null); }
+  if (brand_type !== undefined) { updates.push('brand_type = ?'); params.push(ad_place === 'brand' ? (brand_type || null) : null); }
   if (renewal_type !== undefined) { updates.push('renewal_type = ?'); params.push(renewal_type); }
   if (renewal_period !== undefined) { updates.push('renewal_period = ?'); params.push(renewal_period || null); }
   if (start_date !== undefined) { updates.push('start_date = ?'); params.push(start_date || null); }
