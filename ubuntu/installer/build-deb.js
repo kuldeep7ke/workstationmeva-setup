@@ -52,40 +52,44 @@ const sh = (cmd, opts = {}) => execSync(cmd, { encoding: 'utf8', stdio: ['ignore
 // downloads (cached under tools/)
 // ----------------------------------------------------------------------------
 function download(url, dest) {
-  if (fs.existsSync(dest)) return;
+  if (fs.existsSync(dest)) return Promise.resolve();
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   console.log(`Downloading ${url}`);
   return new Promise((resolve, reject) => {
     const f = fs.createWriteStream(dest);
-    https.get(url, { headers: { 'User-Agent': 'opencode-deb-builder' } }, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        download(res.headers.location, dest).then(resolve, reject);
-        return;
-      }
-      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
-      res.pipe(f);
-      f.on('finish', () => { f.close(resolve); });
-    }).on('error', reject);
+    const fetch = (u) => {
+      https.get(u, { headers: { 'User-Agent': 'opencode-deb-builder' } }, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          res.resume();
+          fetch(new URL(res.headers.location, u).toString());
+          return;
+        }
+        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
+        res.pipe(f);
+        f.on('finish', () => { f.close(resolve); });
+      }).on('error', (e) => { f.destroy(); reject(e); });
+    };
+    fetch(url);
   });
 }
 
-function getNodeBundle() {
+async function getNodeBundle() {
   const glob = fs.readdirSync(path.join(ROOT, 'tools', 'node')).filter((f) => /^node-v\d+\.\d+\.\d+-linux-x64\.tar\.xz$/.test(f));
   if (glob.length) return path.join(ROOT, 'tools', 'node', glob[0]);
   const ver = 'v24.19.0';
   const url = `https://nodejs.org/dist/${ver}/node-${ver}-linux-x64.tar.xz`;
   const dest = path.join(ROOT, 'tools', 'node', `node-${ver}-linux-x64.tar.xz`);
-  download(url, dest);
+  await download(url, dest);
   return dest;
 }
 
-function getCaddyBin() {
+async function getCaddyBin() {
   const cached = path.join(ROOT, 'tools', 'caddy');
   const bin = path.join(cached, 'caddy-linux-amd64');
   if (fs.existsSync(bin)) return bin;
   const ver = '2.11.4';
   const tarball = path.join(cached, `caddy_${ver}_linux_amd64.tar.gz`);
-  download(`https://github.com/caddyserver/caddy/releases/download/v${ver}/caddy_${ver}_linux_amd64.tar.gz`, tarball);
+  await download(`https://github.com/caddyserver/caddy/releases/download/v${ver}/caddy_${ver}_linux_amd64.tar.gz`, tarball);
   fs.mkdirSync(cached, { recursive: true });
   sh(`tar -xzf "${tarball}" -C "${cached}" caddy`);
   fs.renameSync(path.join(cached, 'caddy'), bin);
@@ -140,7 +144,7 @@ function copyTree(src, dest) {
 // ----------------------------------------------------------------------------
 // assemble data payload under STAGING
 // ----------------------------------------------------------------------------
-function assemble() {
+async function assemble() {
   const opt = path.join(STAGING, 'opt', 'workstation-online');
   const npmModules = buildBackendRuntime();
 
@@ -152,13 +156,13 @@ function assemble() {
   copyTree(path.join(ROOT, 'frontend', 'dist'), path.join(opt, 'frontend', 'dist'));
 
   // bundled node runtime (ships as compressed tarball; postinst extracts it)
-  const nodeBundle = getNodeBundle();
+  const nodeBundle = await getNodeBundle();
   fs.mkdirSync(path.join(opt, 'tools', 'node'), { recursive: true });
   cp(nodeBundle, path.join(opt, 'tools', 'node', path.basename(nodeBundle)));
 
   // caddy + config
   fs.mkdirSync(path.join(opt, 'proxy', 'caddy'), { recursive: true });
-  cp(getCaddyBin(), path.join(opt, 'proxy', 'caddy', 'caddy'));
+  cp(await getCaddyBin(), path.join(opt, 'proxy', 'caddy', 'caddy'));
   cp(path.join(ROOT, 'proxy', 'caddy', 'Caddyfile'), path.join(opt, 'proxy', 'caddy', 'Caddyfile'));
 
   // manual-mode launchers (parity with repo)
@@ -372,7 +376,7 @@ async function main() {
   console.log(`Building ${PKG} ${VERSION} (${ARCH})`);
   console.log(`Working dir: ${BUILD}`);
 
-  assemble();
+  await assemble();
   const controlGz = buildControl();
   const dataGz = buildData();
 
