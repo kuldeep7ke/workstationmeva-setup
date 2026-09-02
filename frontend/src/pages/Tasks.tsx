@@ -666,7 +666,7 @@ export default function Tasks() {
                           <button key={l.id} type="button" className="w-full text-left px-3 py-2 hover:bg-accent-50 flex items-center justify-between gap-2"
                             onMouseDown={(e) => { e.preventDefault(); selectLocation(l); }}>
                             <span className="text-sm text-surface-700 truncate">{l.name}</span>
-                            <span className="text-[11px] text-surface-400 shrink-0 capitalize">{l.region}</span>
+                            <span className="text-[11px] text-surface-400 shrink-0 lowercase">{l.region}</span>
                           </button>
                         ))}
                       </div>
@@ -678,7 +678,7 @@ export default function Tasks() {
                           <button key={l.id} type="button" className="w-full text-left px-3 py-2 hover:bg-accent-50 flex items-center justify-between gap-2"
                             onMouseDown={(e) => { e.preventDefault(); selectLocation(l); }}>
                             <span className="text-sm text-surface-700 truncate">{l.name}</span>
-                            <span className="text-[11px] text-surface-400 shrink-0 capitalize">{l.region}</span>
+                            <span className="text-[11px] text-surface-400 shrink-0 lowercase">{l.region}</span>
                           </button>
                         ))}
                       </div>

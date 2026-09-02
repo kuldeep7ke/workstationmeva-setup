@@ -9,6 +9,12 @@ import { Plus, Search, Loader2, Pencil, Trash2, User, MapPin, Phone, Mail, Globe
 import { formatLabel } from '../utils/roles';
 
 const REGIONS = ['local', 'taluka', 'state', 'district'];
+const REGION_LABELS: Record<string, string> = {
+  local: 'Local',
+  taluka: 'Taluka',
+  state: 'State',
+  district: 'District',
+};
 const SPECIALIZATIONS = ['General', 'Politics', 'Crime', 'Sports', 'Entertainment', 'Business', 'Technology', 'Health', 'Education', 'Environment'];
 
 const statusConfig: Record<string, { label: string; color: string }> = {
@@ -220,7 +226,7 @@ export default function Reporters() {
                       </div>
                       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-surface-400">
                         {r.location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{r.location}</span>}
-                        {r.region && <span className="capitalize">{r.region}</span>}
+                        {r.region && <span className="lowercase">{r.region}</span>}
                         {r.specialization && <span>{r.specialization}</span>}
                       </div>
                     </div>
@@ -390,7 +396,7 @@ export default function Reporters() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-surface-800 truncate">{l.name}</p>
-                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-surface-100 text-surface-500 capitalize">{l.region}</span>
+                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-surface-100 text-surface-500 lowercase">{l.region}</span>
                       </div>
                       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-surface-400 mt-0.5">
                         <span>{l.usage_count || 0} use{l.usage_count === 1 ? '' : 's'}</span>
@@ -452,7 +458,7 @@ export default function Reporters() {
               <div>
                 <label className="flat-label">Region</label>
                 <select className="flat-select text-sm" value={form.region} onChange={(e) => setForm({ ...form, region: e.target.value })}>
-                  {REGIONS.map((r) => <option key={r} value={r} className="capitalize">{r}</option>)}
+                  {REGIONS.map((r) => <option key={r} value={r} className="capitalize">{REGION_LABELS[r] || r}</option>)}
                 </select>
               </div>
               <div>
@@ -522,7 +528,7 @@ export default function Reporters() {
               <div>
                 <label className="flat-label">Region</label>
                 <select className="flat-select text-sm" value={locationForm.region} onChange={(e) => setLocationForm({ ...locationForm, region: e.target.value })}>
-                  {REGIONS.map((r) => <option key={r} value={r} className="capitalize">{r}</option>)}
+                  {REGIONS.map((r) => <option key={r} value={r} className="capitalize">{REGION_LABELS[r] || r}</option>)}
                 </select>
               </div>
               <div className="sm:col-span-2">
