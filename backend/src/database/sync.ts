@@ -36,7 +36,6 @@ const PENDING_CACHE_TTL_MS = 2000;
 const listeners: Array<(event: SyncEvent, payload: any) => void> = [];
 const EXCLUDED_TABLES = new Set(['sync_outbox', 'sync_log', 'sqlite_sequence', 'sqlite_master']);
 const MUTATION_RE = /^\s*(INSERT|UPDATE|DELETE|REPLACE)\b/i;
-const TABLE_RE = /(?:INSERT\s+INTO|UPDATE|DELETE\s+FROM)\s+["']?([A-Za-z_][A-Za-z0-9_]*)/i;
 
 // pg returns some column types as non-scalars unless a type parser overrides
 // them: `date` (OID 1082) and `timestamp without time zone` variants come back
@@ -86,8 +85,10 @@ function isMutation(sql: string): boolean {
 }
 
 function tableOf(sql: string): string | null {
-  const m = sql.match(TABLE_RE);
-  return m ? m[1].toLowerCase() : null;
+  const dml = sql.match(/(?:INSERT\s+INTO|UPDATE|DELETE\s+FROM)\s+["']?([A-Za-z_][A-Za-z0-9_]*)/i);
+  if (dml) return dml[1].toLowerCase();
+  const sel = sql.match(/FROM\s+["']?([A-Za-z_][A-Za-z0-9_]*)/i);
+  return sel ? sel[1].toLowerCase() : null;
 }
 
 function getAdapterSafe(): any {
