@@ -622,7 +622,7 @@ export default function Ads() {
                 )}
               </div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-surface-600">
-                {ad.ad_place !== 'brand' && (ad.slots_count && ad.slots_count > 0) && (
+                {ad.ad_place !== 'brand' && Number(ad.slots_count) > 0 && (
                   <span className="flex items-center gap-1"><Layers className="w-3 h-3" /> {ad.slots_count} slot{ad.slots_count > 1 ? 's' : ''}</span>
                 )}
                 {ad.ad_place && (
@@ -631,7 +631,7 @@ export default function Ads() {
                 <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {ad.start_date} - {ad.end_date}</span>
                 {ad.ad_place !== 'brand' && <span>{ad.duration_seconds}s</span>}
               </div>
-              {ad.rate && ad.rate > 0 && (
+              {Number(ad.rate) > 0 && (
                 <div className="flex items-center gap-1 mt-1 text-xs font-medium text-success-700">
                   <DollarSign className="w-3 h-3" /> ₹{ad.rate}
                 </div>
