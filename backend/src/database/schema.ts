@@ -729,6 +729,7 @@ export async function initDatabase() {
         'ALTER TABLE ads ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ',
         'ALTER TABLE locations ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ',
         'ALTER TABLE reporters ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ',
+        'ALTER TABLE ads ADD COLUMN IF NOT EXISTS brand_type TEXT',
       ]) {
         try { await adapter.raw(sql); } catch (e: any) { console.error('[db] PG migration error:', e.message); }
       }
