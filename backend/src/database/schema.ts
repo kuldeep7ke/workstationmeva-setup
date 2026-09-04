@@ -741,6 +741,36 @@ export async function initDatabase() {
       ]) {
         try { await adapter.raw(sql); } catch (e: any) { console.error('[db] PG migration error:', e.message); }
       }
+      // Self-healing reconciliation: the live Supabase tables (created by older
+      // releases) miss columns added since then — CREATE TABLE IF NOT EXISTS is a
+      // no-op on existing tables, so pre-existing live tables never gained them
+      // (e.g. ads.brand_type, tasks.reviewer_id, profiles.pin, ...). Reconcile every
+      // canonical table against PG_TABLES with idempotent ADD COLUMN IF NOT EXISTS
+      // so the live DB always matches the code after a restart.
+      {
+        const blockRe = /CREATE TABLE (?:IF NOT EXISTS )?\s*"?([a-zA-Z_][a-zA-Z0-9_]*)"?\s*\(([\s\S]*?)\)\s*(?:;)/g;
+        let bM: RegExpExecArray | null;
+        const tEnds: Array<{ table: string; body: string }> = [];
+        while ((bM = blockRe.exec(PG_TABLES))) {
+          tEnds.push({ table: bM[1].toLowerCase(), body: bM[2] });
+        }
+        const typeRe = /^\s*"?([a-zA-Z_][a-zA-Z0-9_]*)"?\s+(SERIAL|BIGINT|INTEGER|INT|REAL|NUMERIC|DECIMAL\([^)]*\)|BOOLEAN|TIMESTAMPTZ|TIMESTAMP|DATE|TIME|TEXT|VARCHAR\([^)]*\))/i;
+        for (const { table, body } of tEnds) {
+          if (table === 'backup_config') continue; // fixed single-row table, no sync writes
+          for (const line of body.split('\n')) {
+            const cM = line.match(typeRe);
+            if (!cM) continue;
+            const col = cM[1].toLowerCase();
+            if (col === 'id') continue;
+            const base = cM[2].toUpperCase().startsWith('SERIAL') ? 'INTEGER' : cM[2];
+            try {
+              await adapter.raw(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS "${col}" ${base}`);
+            } catch (e: any) {
+              console.error(`[db] PG reconcile ${table}.${col}:`, e.message);
+            }
+          }
+        }
+      }
       // Repair anchor_tasks CHECK constraint created with the wrong vocabulary
       // (footage_collection/editor_assigned) before the anchor-flow fix — the code
       // and SQLite mirror use footage_gathering/video_editor_assigned.
